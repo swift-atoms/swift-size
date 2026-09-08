@@ -43,3 +43,22 @@ struct `Size coding preserves validated dimensions` {
         #expect(try JSONEncoder().encode(value) == Data("[]".utf8))
     }
 }
+
+// These generic bodies must type-check without the opposite coding constraint.
+private func encode<let N: Int, Value: Magnitude::Scalar & Encodable>(
+    _ value: Size<N, Value>
+) throws -> Data {
+    try JSONEncoder().encode(value)
+}
+
+private func decode<let N: Int, Value: Magnitude::Scalar & Decodable>(
+    _ type: Size<N, Value>.Type, from data: Data
+) throws -> Size<N, Value> {
+    try JSONDecoder().decode(type, from: data)
+}
+
+@Test func `Size coding requires only the requested direction`() throws {
+    let value = try Size(width: 4, height: 3)
+    let data = try encode(value)
+    #expect(try decode(Size<2, Int>.self, from: data) == value)
+}

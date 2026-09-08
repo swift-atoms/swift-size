@@ -1,12 +1,15 @@
 internal import Vector
 
 #if !hasFeature(Embedded)
-extension Size: Codable where Scalar: Codable {
+extension Size: Decodable where Scalar: Decodable {
     /// Vector checks the dimension count; Magnitude checks each dimension's value.
     public init(from decoder: any Decoder) throws {
         self.init(dimensions: try Vector(from: decoder))
     }
 
+}
+
+extension Size: Encodable where Scalar: Encodable {
     public func encode(to encoder: any Encoder) throws {
         try dimensions.encode(to: encoder)
     }

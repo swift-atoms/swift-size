@@ -14,6 +14,18 @@ public struct Size<let N: Int, Scalar: Magnitude::Scalar> {
         self.dimensions = dimensions
     }
 
+    public subscript(index: Int) -> Magnitude<Scalar> { dimensions[index] }
+
+    public var values: Vector<N, Scalar> { Vector(self) }
+
+    public static var zero: Self { Self(repeating: .zero) }
+}
+
+extension Size: Equatable {}
+extension Size: Hashable where Scalar: Hashable {}
+extension Size: Sendable where Scalar: Sendable {}
+
+extension Size {
     public init(validating values: Vector<N, Scalar>) throws(Error) {
         let dimensions: InlineArray<N, Magnitude<Scalar>> = try InlineArray {
             (index: Int) throws(Error) in try Magnitude(validating: values[index])
@@ -24,14 +36,11 @@ public struct Size<let N: Int, Scalar: Magnitude::Scalar> {
     public init(repeating dimension: Magnitude<Scalar>) {
         self.init(dimensions: Vector(repeating: dimension))
     }
-
-    public subscript(index: Int) -> Magnitude<Scalar> { dimensions[index] }
-
-    public var values: Vector<N, Scalar> { dimensions.map(\.value) }
-
-    public static var zero: Self { Self(repeating: .zero) }
 }
 
-extension Size: Equatable {}
-extension Size: Hashable where Scalar: Hashable {}
-extension Size: Sendable where Scalar: Sendable {}
+extension Vector where Scalar: Magnitude::Scalar {
+    /// Extract the validated size components in axis order.
+    public init(_ size: Size<N, Scalar>) {
+        self.init(size.dimensions.map(\.value).components)
+    }
+}
