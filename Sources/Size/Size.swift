@@ -1,15 +1,10 @@
 @_exported public import Magnitude
 @_exported public import Vector
 
-/// Finite, nonnegative dimensions. A size has no position or orientation.
-///
-/// Magnitude owns scalar validation and Vector owns dimensional storage.
-/// Signed changes belong to a displacement, not to Size's value domain.
 public struct Size<let N: Int, Scalar: Magnitude::Scalar> {
     public let dimensions: Vector<N, Magnitude<Scalar>>
     public typealias Error = Magnitude<Scalar>.Error
 
-    /// Construct from dimensions whose validity has already been established.
     public init(dimensions: Vector<N, Magnitude<Scalar>>) {
         self.dimensions = dimensions
     }
@@ -39,7 +34,7 @@ extension Size {
 }
 
 extension Vector where Scalar: Magnitude::Scalar {
-    /// Extract the validated size components in axis order.
+
     public init(_ size: Size<N, Scalar>) {
         self.init(size.dimensions.map(\.value).components)
     }

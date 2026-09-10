@@ -2,7 +2,7 @@ internal import Vector
 
 #if !hasFeature(Embedded)
 extension Size: Decodable where Scalar: Decodable {
-    /// Vector checks the dimension count; Magnitude checks each dimension's value.
+
     public init(from decoder: any Decoder) throws {
         self.init(dimensions: try Vector(from: decoder))
     }

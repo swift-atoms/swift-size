@@ -44,7 +44,6 @@ struct `Size coding preserves validated dimensions` {
     }
 }
 
-// These generic bodies must type-check without the opposite coding constraint.
 private func encode<let N: Int, Value: Magnitude::Scalar & Encodable>(
     _ value: Size<N, Value>
 ) throws -> Data {
