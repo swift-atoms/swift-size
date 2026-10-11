@@ -10,6 +10,9 @@ public struct Size<let N: Int, Scalar: Magnitude::Scalar> {
     }
 
     public subscript(index: Int) -> Magnitude<Scalar> { dimensions[index] }
+}
+
+extension Size {
 
     public var values: Vector<N, Scalar> { Vector(self) }
 
