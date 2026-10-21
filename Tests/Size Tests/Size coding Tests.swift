@@ -23,7 +23,9 @@ struct `Size coding preserves validated dimensions` {
     func `Nonfinite scalar decoding still goes through magnitude validation`(_ value: String) {
         let decoder = JSONDecoder()
         decoder.nonConformingFloatDecodingStrategy = .convertFromString(
-            positiveInfinity: "Infinity", negativeInfinity: "-Infinity", nan: "NaN"
+            positiveInfinity: "Infinity",
+            negativeInfinity: "-Infinity",
+            nan: "NaN"
         )
         #expect(throws: DecodingError.self) {
             try decoder.decode(Size<1, Double>.self, from: Data("[\"\(value)\"]".utf8))
@@ -51,7 +53,8 @@ private func encode<let N: Int, Value: Magnitude::Scalar & Encodable>(
 }
 
 private func decode<let N: Int, Value: Magnitude::Scalar & Decodable>(
-    _ type: Size<N, Value>.Type, from data: Data
+    _ type: Size<N, Value>.Type,
+    from data: Data
 ) throws -> Size<N, Value> {
     try JSONDecoder().decode(type, from: data)
 }

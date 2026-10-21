@@ -10,24 +10,28 @@ let package = Package(
         .package(url: "https://github.com/swift-atoms/swift-magnitude.git", branch: "main"),
     ],
     targets: [
-        .target(name: "Size", dependencies: [
-            .product(name: "Vector", package: "swift-vector"),
-            .product(name: "Magnitude", package: "swift-magnitude"),
-        ]),
+        .target(
+            name: "Size",
+            dependencies: [
+                .product(name: "Vector", package: "swift-vector"),
+                .product(name: "Magnitude", package: "swift-magnitude"),
+            ]
+        ),
         .testTarget(name: "Size Tests", dependencies: [.target(name: "Size")]),
     ],
     swiftLanguageModes: [.v6]
 )
 
 for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    target.swiftSettings = (target.swiftSettings ?? []) + [
-        .strictMemorySafety(),
-        .enableUpcomingFeature("ExistentialAny"),
-        .enableUpcomingFeature("InternalImportsByDefault"),
-        .enableUpcomingFeature("MemberImportVisibility"),
-        .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-        .enableUpcomingFeature("InferIsolatedConformances"),
-        .enableExperimentalFeature("Lifetimes"),
-        .treatAllWarnings(as: .error),
-    ]
+    target.swiftSettings =
+        (target.swiftSettings ?? []) + [
+            .strictMemorySafety(),
+            .enableUpcomingFeature("ExistentialAny"),
+            .enableUpcomingFeature("InternalImportsByDefault"),
+            .enableUpcomingFeature("MemberImportVisibility"),
+            .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+            .enableUpcomingFeature("InferIsolatedConformances"),
+            .enableExperimentalFeature("Lifetimes"),
+            .treatAllWarnings(as: .error),
+        ]
 }
